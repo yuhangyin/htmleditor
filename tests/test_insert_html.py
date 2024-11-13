@@ -1,0 +1,27 @@
+import os
+
+import editor
+
+from test_utils import create_file_hash
+
+
+def test_insert_html():
+    f0 = "tests/test_html/insert.html"
+    f1 = "tests/test_html/insert_out.html"
+
+    commands = [
+        "read tests/test_html/insert.html",
+        'insert li item2 item3 "Item B"',
+        'insert li item1 item2 "Item A"',
+        "save tests/test_html/insert_out.html",
+    ]
+
+    app = editor.App()
+
+    for command in commands:
+        app.execute_from_text(command)
+
+    h0 = create_file_hash(f0)
+    h1 = create_file_hash(f1)
+
+    assert h0 == h1

@@ -71,7 +71,7 @@ class ToHtmlVisitor(BaseVisitor):
                 self.visit(child, indent_index)
             return
         self._level += 1
-        indent = ' ' * self._level * indent_index
+        indent = ' ' * self._level * int(indent_index)
 
         opening_tag = f"<{node.name}"
         if 'id' in node.data:

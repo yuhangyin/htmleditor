@@ -6,10 +6,6 @@ class BaseNode:
         self.parent = None
         self.children = []
 
-    def __eq__(self, node):
-        if isinstance(node, str):
-            return self.name == node
-        return self.name == node.name
 
     def accept(self, v):
         cls_name = self.__class__.__name__.lower()
@@ -25,8 +21,13 @@ class BaseNode:
             node.parent = self
             self.children.append(node)
 
-    def remove_child(self, node_name):
-        self.children = [child for child in self.children if child != node_name]
+    def remove_child(self, node_id):
+        node_to_remove = None
+        for child in self.children:
+            if child.data.get('id') == node_id:
+                node_to_remove = child
+                break
+        self.children.remove(node_to_remove)
 
     def copy(self):
         node_cls = self.__class__

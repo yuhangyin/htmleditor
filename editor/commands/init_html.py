@@ -2,12 +2,12 @@ from .command import BaseCommand
 from editor.core import HtmlReader
 
 inithtml_content = """
-<html>
+  <html>
     <head>
-        <title></title>
+      <title> </title>
     </head>
-    <body></body>
-</html>
+    <body> </body>
+  </html>
 """
 
 class InitCommand(BaseCommand):
@@ -19,6 +19,5 @@ class InitCommand(BaseCommand):
         self.app.tree = HtmlReader().read_html(inithtml_content)
         self.app.history.clear()
         print("成功初始化文件 。")
-
 
         return True

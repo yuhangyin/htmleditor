@@ -15,14 +15,15 @@ class InsertElementCommand(BaseCommand):
             return False
 
         # 创建新元素并插入
-        new_element = HtmlNode(tag_name, data={'id': id_value}, text=text_content)
+        new_element = HtmlNode(tag_name, data = {'id': id_value}, text = text_content)
         insert_location_node.parent.insert_before(new_element, insert_location_node)
         self.inserted_element = new_element
+        self.inserted_element_id = id_value
         return True
 
     def undo(self):
         # 撤销插入操作
-        self.inserted_element.parent.remove_child(self.inserted_element)
+        self.inserted_element.parent.remove_child(self.inserted_element_id)
 
 
 class AppendElementCommand(BaseCommand):
@@ -38,14 +39,15 @@ class AppendElementCommand(BaseCommand):
             return False
 
         # 创建新元素并追加到父节点中
-        new_element = HtmlNode(tag_name, id=id_value, text=text_content)
+        new_element = HtmlNode(tag_name, data = {'id': id_value}, text = text_content)
         parent_node.add_child(new_element)
         self.appended_element = new_element
+        self.appended_element_id = id_value
         return True
 
     def undo(self):
         # 撤销追加操作
-        self.appended_element.parent.remove_child(self.appended_element)
+        self.appended_element.parent.remove_child(self.appended_element_id)
 
 
 class EditIdCommand(BaseCommand):
@@ -62,7 +64,7 @@ class EditIdCommand(BaseCommand):
             return False
 
         # 修改 id
-        element.id = new_id
+        element.data = {'id': new_id}
         self.old_id = old_id
         self.new_id = new_id
         return True
@@ -71,7 +73,7 @@ class EditIdCommand(BaseCommand):
         # 撤销 id 修改
         element = self.app.tree.find(self.new_id)
         if element:
-            element.id = self.old_id
+            element.data = {'id': self.old_id}
 
 
 class EditTextCommand(BaseCommand):
@@ -110,7 +112,7 @@ class DeleteElementCommand(BaseCommand):
         # 删除元素并记录
         self.deleted_element = element
         self.deleted_element_parent = element.parent
-        element.parent.remove_child(element)
+        element.parent.remove_child(element_id)
         return True
 
     def undo(self):
